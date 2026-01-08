@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar"
 
 const HomePage = () => {
@@ -54,10 +55,7 @@ const HomePage = () => {
                     <h3>45 min delivery</h3>
                 </div>
             </div>
-
-            <footer className="footer">
-                © 2017 Pizzeria. All rights reserved.
-            </footer>
+            <Footer />
         </>
     );
 };

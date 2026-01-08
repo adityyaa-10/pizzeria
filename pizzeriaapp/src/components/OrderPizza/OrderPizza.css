@@ -1,0 +1,113 @@
+.pizza-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    max-width: 600px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    align-items: start;
+}
+
+.pizza-left {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.pizza-title {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.veg-indicator {
+    width: 14px;
+    height: 14px;
+    background: green;
+    border: 1px solid #000;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.nonveg-indicator {
+    width: 14px;
+    height: 14px;
+    background: red;
+    border: 1px solid #000;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.pizza-center {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pizza-desc {
+    margin: 0;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.pizza-center p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pizza-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
+
+.pizza-right img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.add-to-cart-btn {
+    background: orange;
+    border: none;
+    padding: 12px 24px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background: #e55a2b;
+}
+
+.pizza-list {
+    max-width: 1216px;
+    margin: 16px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}

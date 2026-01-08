@@ -44,6 +44,11 @@
   gap: 20px;
 }
 
+.nav-links .link {
+  color: white;
+  text-decoration: none;
+}
+
 .cart-btn {
   background: orange;
   border: none;
@@ -52,6 +57,7 @@
   cursor: pointer;
   font-weight: 500;
   border-radius: 4px;
+  text-decoration: none;
 }
 
 /* PAGE CONTENT */
