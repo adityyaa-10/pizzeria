@@ -1,4 +1,5 @@
 import "./OrderPizza.css"
+import AddToCartButton from "../../utils/AddToCartButton"
 
 const EachPizzaCard = ({ pizza }) => {
     if (!pizza) {
@@ -36,7 +37,14 @@ const EachPizzaCard = ({ pizza }) => {
                     alt={`${pizza.name} Pizza`}
                 />
 
-                <button className="add-to-cart-btn">Add to Cart</button>
+                <AddToCartButton
+                    isCustomPizza={false}
+                    data={{
+                        pizza: pizza,
+                        quantity: 1
+                    }}
+                    className="add-to-cart-btn"
+                />
             </div>
         </div>
     );

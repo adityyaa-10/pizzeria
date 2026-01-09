@@ -1,0 +1,114 @@
+.build-pizza-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: #fff;
+}
+
+.build-pizza-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.build-pizza-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.build-pizza-header p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.ingredient-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+
+.ingredient-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ingredient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ingredient-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+.ingredient-price {
+    font-size: 16px;
+    color: #666;
+}
+
+.ingredient-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ingredient-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: orange;
+}
+
+.add-text {
+    font-size: 16px;
+    color: #d2691e;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.total-cost {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.build-pizza-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 40px;
+    padding: 15px 30px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.build-pizza-btn:hover {
+    background: #333;
+}
