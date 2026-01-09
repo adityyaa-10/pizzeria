@@ -31,8 +31,7 @@ const cartItemSchema = new mongoose.Schema(
         name: {
             type: String
         }
-    },
-    { timestamps: true }
+    }
 );
 
 const Cart = mongoose.model("CartItem", cartItemSchema);
