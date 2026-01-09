@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import seed from "./seed.js";
 import pizzaRoutes from "./routes/pizza.route.js";
 import ingredientsRoutes from "./routes/ingredients.route.js";
+import cartRoutes from "./routes/cart.route.js";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ app.use(express.json()); // allows us to send json data in the request body
 
 app.use("/api/pizzas", pizzaRoutes);
 app.use("/api/ingredients", ingredientsRoutes);
-
+app.use("/api/cart", cartRoutes);
 
 const PORT = process.env.PORT || 8000;
 async function startServer() {

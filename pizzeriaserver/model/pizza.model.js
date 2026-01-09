@@ -37,11 +37,9 @@ const pizzaSchema = new mongoose.Schema(
         topping: [
             {
                 type: String,
-                required: true
             }
         ],
-    },
-    { timestamps: true }
+    }
 );
 
 const Pizza = mongoose.model("Pizza", pizzaSchema);

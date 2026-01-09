@@ -19,8 +19,7 @@ const ingredientSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-    },
-    { timestamps: true }
+    }
 );
 
 const Ingredient = mongoose.model("Ingredient", ingredientSchema);
