@@ -7,11 +7,24 @@ const cartItemSchema = new mongoose.Schema(
             required: true,
             default: false
         },
+        isCustomized: {
+            type: Boolean,
+            default: false
+        },
         pizza: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Pizza"
         },
+        basePizza: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Pizza"
+        },
         ingredients: [
+            {
+                type: String,
+            }
+        ],
+        addedIngredients: [
             {
                 type: String,
             }

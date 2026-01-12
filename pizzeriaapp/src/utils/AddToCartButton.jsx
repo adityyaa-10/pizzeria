@@ -1,7 +1,7 @@
 import React from 'react'
 import addToCart from './addToCart'
 
-const AddToCartButton = ({ isCustomPizza, data, className, onSuccess }) => {
+const AddToCartButton = ({ isCustomPizza, isCustomized, data, className, onSuccess }) => {
 
     const handleClick = async () => {
         try {
@@ -9,17 +9,31 @@ const AddToCartButton = ({ isCustomPizza, data, className, onSuccess }) => {
             let cartData = {}
 
             if (isCustomPizza === true) {
-                // For custom pizza
+                // For custom pizza (build from scratch)
                 cartData = {
                     isCustomPizza: true,
+                    isCustomized: false,
                     ingredients: data.ingredients,
                     price: data.price,
                     quantity: data.quantity
                 }
-            } else {
-                // For regular pizza
+            } else if (isCustomized === true) {
+                // For customized existing pizza
                 cartData = {
                     isCustomPizza: false,
+                    isCustomized: true,
+                    pizza: data.pizza,
+                    basePizza: data.basePizza,
+                    ingredients: data.ingredients,
+                    addedIngredients: data.addedIngredients || [],
+                    price: data.price,
+                    quantity: data.quantity
+                }
+            } else {
+                // For regular pizza (no customization)
+                cartData = {
+                    isCustomPizza: false,
+                    isCustomized: false,
                     pizza: data.pizza,
                     quantity: data.quantity
                 }
@@ -29,7 +43,8 @@ const AddToCartButton = ({ isCustomPizza, data, className, onSuccess }) => {
 
             // Show success message
             const itemName = isCustomPizza ? "Custom Pizza" : data.pizza.name
-            alert(`${itemName} added to cart!`)
+            const customizationMsg = isCustomized ? " (customized)" : ""
+            alert(`${itemName}${customizationMsg} added to cart!`)
 
             if (onSuccess) {
                 onSuccess()

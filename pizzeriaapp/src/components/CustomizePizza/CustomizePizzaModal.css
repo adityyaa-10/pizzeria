@@ -1,0 +1,256 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 30px;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    color: #666;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.modal-close-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.customize-modal-header {
+    margin-bottom: 30px;
+}
+
+.customize-modal-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.pizza-preview {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.pizza-preview-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.pizza-preview-info {
+    flex: 1;
+}
+
+.pizza-preview-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.pizza-base-price {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.base-ingredients {
+    margin-top: 10px;
+}
+
+.base-ingredients strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.base-ingredients p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.customize-modal-body {
+    margin-bottom: 30px;
+}
+
+.customize-modal-body h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.ingredient-item {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 80px 1fr auto;
+    gap: 20px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+
+.ingredient-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ingredient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ingredient-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+.ingredient-price {
+    font-size: 16px;
+    color: #666;
+}
+
+.ingredient-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ingredient-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: orange;
+}
+
+.add-text {
+    font-size: 16px;
+    color: #d2691e;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.added-ingredients {
+    background: #fff3cd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.added-ingredients strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #856404;
+}
+
+.added-ingredients p {
+    color: #856404;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.final-ingredients {
+    background: #d4edda;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.final-ingredients strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #155724;
+}
+
+.final-ingredients p {
+    color: #155724;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.customize-modal-footer {
+    border-top: 2px solid #eee;
+    padding-top: 20px;
+}
+
+.total-cost {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.add-to-cart-customize-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.add-to-cart-customize-btn:hover {
+    background: #333;
+}
