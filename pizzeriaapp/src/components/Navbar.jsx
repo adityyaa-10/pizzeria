@@ -12,7 +12,6 @@ const Navbar = () => {
                     </Link>
                     <ul className="nav-links">
                         <Link className="link" to={'/order'}>Order Pizza</Link>
-                        <Link className="link" to={'/build'}>Build Ur Pizza</Link>
                     </ul>
                 </div>
 

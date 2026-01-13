@@ -6,9 +6,7 @@ import CustomizePizzaModal from "../CustomizePizza/CustomizePizzaModal"
 const EachPizzaCard = ({ pizza }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    if (!pizza) {
-        return null
-    }
+    if (!pizza) return null
 
     const handleModalClose = () => {
         setIsModalOpen(false)
@@ -27,9 +25,7 @@ const EachPizzaCard = ({ pizza }) => {
                 </div>
 
                 <div className="pizza-center">
-                    <p className="pizza-desc">
-                        {pizza.description}
-                    </p>
+                    <p className="pizza-desc">{pizza.description}</p>
 
                     <p>
                         <strong>Ingredients:</strong> {pizza.ingredients.join(", ")}
@@ -47,15 +43,20 @@ const EachPizzaCard = ({ pizza }) => {
                     />
 
                     <div className="pizza-buttons">
+                        {/* Normal Add To Cart */}
                         <AddToCartButton
-                            isCustomPizza={false}
                             isCustomized={false}
                             data={{
-                                pizza: pizza,
+                                basePizza: pizza._id,
+                                ingredients: pizza.ingredients,
+                                addedIngredients: [],
+                                price: pizza.price,
                                 quantity: 1
                             }}
                             className="add-to-cart-btn"
                         />
+
+                        {/* Customize */}
                         <button
                             className="customize-btn"
                             onClick={() => setIsModalOpen(true)}
@@ -72,6 +73,7 @@ const EachPizzaCard = ({ pizza }) => {
                 onClose={handleModalClose}
             />
         </>
-    );
-};
+    )
+}
+
 export default EachPizzaCard

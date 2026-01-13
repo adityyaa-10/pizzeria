@@ -5,7 +5,6 @@ import App from './App.jsx'
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import OrderPizza from './pages/OrderPizza.jsx';
-import BuildPizza from './pages/BuildPizza.jsx';
 import CartPage from './pages/Cart.jsx';
 
 const router = createBrowserRouter([
@@ -16,10 +15,6 @@ const router = createBrowserRouter([
   {
     path: "/order",
     element: <OrderPizza />
-  },
-  {
-    path: "/build",
-    element: <BuildPizza />
   },
   {
     path: "/cart",

@@ -3,55 +3,44 @@ import Pizza from "../model/pizza.model.js";
 
 export const addToCart = async (req, res) => {
     try {
-        const { isCustomPizza, isCustomized, pizza, basePizza, ingredients, addedIngredients, quantity, price } = req.body;
+        const { isCustomized, basePizza, ingredients, addedIngredients, quantity, price } = req.body;
+
+        const pizzaData = await Pizza.findById(basePizza);
+        if (!pizzaData) {
+            return res.status(404).json({ message: "Pizza not found" });
+        }
 
         const cartData = {
-            isCustomPizza: isCustomPizza || false,
             isCustomized: isCustomized || false,
-            quantity,
+            basePizza: pizzaData._id,
+            quantity: quantity || 1,
+            imageUrl: pizzaData.image,
+            name: pizzaData.name
         };
 
-        if (isCustomPizza) {
-            // Build from scratch pizza
-            cartData.pizza = null;
-            cartData.basePizza = null;
-            cartData.ingredients = ingredients;
-            cartData.addedIngredients = [];
-            cartData.price = price;
-            cartData.imageUrl = "https://images.pexels.com/photos/280453/pexels-photo-280453.jpeg";
-            cartData.name = "Custom Pizza";
-        } else if (isCustomized) {
-            // Customized existing pizza
-            cartData.pizza = pizza._id;
-            cartData.basePizza = basePizza || pizza._id;
-            cartData.ingredients = ingredients; // base + added ingredients
+        if (isCustomized) {
+            cartData.ingredients = ingredients;              // base + added
             cartData.addedIngredients = addedIngredients || [];
-            cartData.price = price;
-            cartData.imageUrl = pizza.image;
-            cartData.name = pizza.name;
+            cartData.price = price;                          // recalculated price
         } else {
-            // Base pizza (no customization)
-            cartData.pizza = pizza._id;
-            cartData.basePizza = pizza._id;
-            cartData.ingredients = pizza.ingredients;
+            cartData.ingredients = pizzaData.ingredients;
             cartData.addedIngredients = [];
-            cartData.price = pizza.price;
-            cartData.imageUrl = pizza.image;
-            cartData.name = pizza.name;
+            cartData.price = pizzaData.price;
         }
 
         const cartItem = await Cart.create(cartData);
-        const populatedItem = await Cart.findById(cartItem._id).populate('pizza').populate('basePizza');
+        const populatedItem = await Cart.findById(cartItem._id).populate("basePizza");
+
         res.status(201).json(populatedItem);
     } catch (error) {
-        //console.log(error)
         res.status(500).json({ message: "Failed to add item to cart" });
     }
 };
 
+
 export const getAllCartItems = async (req, res) => {
     try {
-        const cartItems = await Cart.find().populate('pizza').populate('basePizza');
+        const cartItems = await Cart.find().populate('basePizza');
         res.status(200).json(cartItems);
     } catch (error) {
         //console.log(error)
@@ -64,67 +53,58 @@ export const updateCartItemQuantity = async (req, res) => {
         const { id } = req.params;
         const { quantity } = req.body;
 
-        const existingItem = await Cart.findById(id).populate('basePizza');
+        const existingItem = await Cart.findById(id).populate("basePizza");
 
         if (!existingItem) {
             return res.status(404).json({ message: "Cart item not found" });
         }
 
-        // If it's a customized pizza and quantity is being increased
-        if (existingItem.isCustomized && quantity > existingItem.quantity && existingItem.basePizza) {
-            // Create a new cart item with base pizza (not customized)
+        // If customized pizza & quantity is being increased
+        if (existingItem.isCustomized && quantity > existingItem.quantity) {
             const basePizza = existingItem.basePizza;
-            // Handle both populated and unpopulated cases
-            const basePizzaId = typeof basePizza === 'object' && basePizza._id ? basePizza._id : basePizza;
-            const basePizzaData = typeof basePizza === 'object' && basePizza.ingredients ? basePizza : null;
 
-            // If basePizza is not populated, we need to fetch it
-            let pizzaData = basePizzaData;
-            if (!pizzaData) {
-                pizzaData = await Pizza.findById(basePizzaId);
-            }
-
-            if (!pizzaData) {
+            if (!basePizza) {
                 return res.status(404).json({ message: "Base pizza not found" });
             }
 
+            // Create a new cart item as base pizza
             const newCartItem = await Cart.create({
-                isCustomPizza: false,
                 isCustomized: false,
-                pizza: pizzaData._id,
-                basePizza: pizzaData._id,
-                ingredients: pizzaData.ingredients,
+                basePizza: basePizza._id,
+                ingredients: basePizza.ingredients,
                 addedIngredients: [],
                 quantity: 1,
-                price: pizzaData.price,
-                imageUrl: pizzaData.image,
-                name: pizzaData.name
+                price: basePizza.price,
+                imageUrl: basePizza.image,
+                name: basePizza.name
             });
 
-            // Populate and return the new item
-            const populatedNewItem = await Cart.findById(newCartItem._id).populate('pizza').populate('basePizza');
+            const populatedNewItem = await Cart.findById(newCartItem._id)
+                .populate("basePizza");
 
-            // Keep the existing customized pizza with its original quantity
             return res.status(200).json({
-                updatedItem: existingItem,
+                originalItem: existingItem,
                 newItem: populatedNewItem,
-                message: "New base pizza added to cart"
+                message: "Base pizza added so user can customize again"
             });
         }
 
-        // Normal quantity update for non-customized pizzas or quantity decrease
+        // Normal update for:
+        // - base pizzas
+        // - customized pizzas when quantity is decreased
         const updatedItem = await Cart.findByIdAndUpdate(
             id,
             { quantity },
             { new: true }
-        ).populate('pizza').populate('basePizza');
+        ).populate("basePizza");
 
         res.status(200).json(updatedItem);
+
     } catch (error) {
-        //console.log(error)
         res.status(500).json({ message: "Failed to update cart item quantity" });
     }
 };
+
 
 export const deleteCartItem = async (req, res) => {
     try {

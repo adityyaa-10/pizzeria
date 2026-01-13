@@ -3,7 +3,7 @@ import axios from "axios"
 
 const EachCartItem = ({ item, onQuantityChange, onDelete }) => {
     const isCustomized = item.isCustomized || false
-    const baseIngredients = item.pizza?.ingredients || []
+    const baseIngredients = item.basePizza?.ingredients || []
     const addedIngredients = item.addedIngredients || []
     const allIngredients = item.ingredients || []
 
@@ -26,9 +26,9 @@ const EachCartItem = ({ item, onQuantityChange, onDelete }) => {
                 quantity: item.quantity + 1
             })
 
-            // If it's a customized pizza and backend created a new item
+            // Backend sends newItem only when customized pizza is increased
             if (response.data.newItem) {
-                alert("New base pizza added to cart (can be customized separately)")
+                alert("A new base pizza was added so you can customize it again.")
             }
 
             onQuantityChange()
@@ -47,31 +47,14 @@ const EachCartItem = ({ item, onQuantityChange, onDelete }) => {
         }
     }
 
-    // Get base ingredients - if pizza is populated, use pizza.ingredients, otherwise use stored base
-    const getBaseIngredients = () => {
-        if (item.pizza && typeof item.pizza === 'object' && item.pizza.ingredients) {
-            return item.pizza.ingredients
-        }
-        // Fallback: calculate base ingredients by removing added ones
-        if (isCustomized && addedIngredients.length > 0) {
-            return allIngredients.filter(ing => !addedIngredients.includes(ing))
-        }
-        return allIngredients
-    }
-
-    const baseIngs = getBaseIngredients()
-
     return (
-        <div className={`cart-item-card ${isCustomized ? 'customized-item' : ''}`}>
+        <div className={`cart-item-card ${isCustomized ? "customized-item" : ""}`}>
             <div className="cart-item-left">
                 <div className="cart-item-info">
                     <div className="cart-item-header">
                         <h3 className="cart-item-name">{item.name}</h3>
                         {isCustomized && (
                             <span className="customized-badge">Customized</span>
-                        )}
-                        {item.isCustomPizza && (
-                            <span className="custom-badge">Custom Built</span>
                         )}
                     </div>
 
@@ -80,14 +63,19 @@ const EachCartItem = ({ item, onQuantityChange, onDelete }) => {
                             <div className="base-ingredients-section">
                                 <strong>Base:</strong>
                                 <span className="ingredients-text">
-                                    {Array.isArray(baseIngs) ? baseIngs.join(", ") : baseIngs}
+                                    {Array.isArray(baseIngredients)
+                                        ? baseIngredients.join(", ")
+                                        : baseIngredients}
                                 </span>
                             </div>
+
                             {addedIngredients.length > 0 && (
                                 <div className="added-ingredients-section">
                                     <strong>Added:</strong>
                                     <span className="ingredients-text added">
-                                        {Array.isArray(addedIngredients) ? addedIngredients.join(", ") : addedIngredients}
+                                        {Array.isArray(addedIngredients)
+                                            ? addedIngredients.join(", ")
+                                            : addedIngredients}
                                     </span>
                                 </div>
                             )}
@@ -110,18 +98,25 @@ const EachCartItem = ({ item, onQuantityChange, onDelete }) => {
                         >
                             -
                         </button>
+
                         <span className="quantity-display">{item.quantity}</span>
+
                         <button
                             className="quantity-btn"
                             onClick={handleIncrease}
-                            title={isCustomized ? "Add base pizza to cart (can customize separately)" : ""}
+                            title={
+                                isCustomized
+                                    ? "Increasing will add a new base pizza for customization"
+                                    : ""
+                            }
                         >
                             +
                         </button>
                     </div>
+
                     {isCustomized && (
                         <span className="quantity-hint">
-                            Increasing adds base pizza
+                            Increasing adds a base pizza
                         </span>
                     )}
                 </div>

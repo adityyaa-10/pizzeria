@@ -18,7 +18,6 @@ const CustomizePizzaModal = ({ pizza, isOpen, onClose, onSuccess }) => {
                 }
             }
             fetchIngredients()
-            // Reset selected ingredients when modal opens
             setSelectedIngredients([])
         }
     }, [isOpen])
@@ -26,34 +25,32 @@ const CustomizePizzaModal = ({ pizza, isOpen, onClose, onSuccess }) => {
     if (!isOpen || !pizza) return null
 
     const handleIngredientToggle = (ingredient) => {
-        setSelectedIngredients((prevSelected) => {
-            const found = prevSelected.find(item => item.id === ingredient.id);
-            if (found) {
-                return prevSelected.filter(item => item.id !== ingredient.id);
+        setSelectedIngredients((prev) => {
+            const exists = prev.find(item => item.id === ingredient.id)
+            if (exists) {
+                return prev.filter(item => item.id !== ingredient.id)
             } else {
-                return [...prevSelected, ingredient];
+                return [...prev, ingredient]
             }
-        });
+        })
     }
 
     const calculateTotalPrice = () => {
-        let total = pizza.price;
+        let total = pizza.price
         for (const ingredient of selectedIngredients) {
-            total += ingredient.price;
+            total += ingredient.price
         }
-        return total;
+        return total
     }
 
     const getFinalIngredients = () => {
-        const baseIngredients = [...pizza.ingredients];
-        const addedIngredientNames = selectedIngredients.map(ing => ing.tname);
-        return [...baseIngredients, ...addedIngredientNames];
+        const baseIngredients = [...pizza.ingredients]
+        const addedIngredientNames = selectedIngredients.map(ing => ing.tname)
+        return [...baseIngredients, ...addedIngredientNames]
     }
 
     const handleAddToCart = () => {
-        if (onSuccess) {
-            onSuccess()
-        }
+        if (onSuccess) onSuccess()
         onClose()
     }
 
@@ -68,7 +65,9 @@ const CustomizePizzaModal = ({ pizza, isOpen, onClose, onSuccess }) => {
                         <img src={pizza.image} alt={pizza.name} className="pizza-preview-image" />
                         <div className="pizza-preview-info">
                             <p className="pizza-preview-name">{pizza.name}</p>
-                            <p className="pizza-base-price">Base Price: ₹{pizza.price.toFixed(2)}</p>
+                            <p className="pizza-base-price">
+                                Base Price: ₹{pizza.price.toFixed(2)}
+                            </p>
                             <div className="base-ingredients">
                                 <strong>Base Ingredients:</strong>
                                 <p>{pizza.ingredients.join(", ")}</p>
@@ -81,7 +80,10 @@ const CustomizePizzaModal = ({ pizza, isOpen, onClose, onSuccess }) => {
                     <h3>Add Extra Ingredients</h3>
                     <div className="ingredients-list">
                         {ingredients.map((ingredient) => {
-                            const isSelected = selectedIngredients.some(item => item.id === ingredient.id)
+                            const isSelected = selectedIngredients.some(
+                                item => item.id === ingredient.id
+                            )
+
                             return (
                                 <div key={ingredient.id} className="ingredient-item">
                                     <img
@@ -90,8 +92,12 @@ const CustomizePizzaModal = ({ pizza, isOpen, onClose, onSuccess }) => {
                                         className="ingredient-image"
                                     />
                                     <div className="ingredient-info">
-                                        <span className="ingredient-name">{ingredient.tname}</span>
-                                        <span className="ingredient-price">₹{ingredient.price.toFixed(2)}</span>
+                                        <span className="ingredient-name">
+                                            {ingredient.tname}
+                                        </span>
+                                        <span className="ingredient-price">
+                                            ₹{ingredient.price.toFixed(2)}
+                                        </span>
                                     </div>
                                     <div className="ingredient-controls">
                                         <input
@@ -122,13 +128,14 @@ const CustomizePizzaModal = ({ pizza, isOpen, onClose, onSuccess }) => {
 
                 <div className="customize-modal-footer">
                     <div className="total-cost">
-                        <span>Total Price: ₹{calculateTotalPrice().toFixed(2)}</span>
+                        <span>
+                            Total Price: ₹{calculateTotalPrice().toFixed(2)}
+                        </span>
                     </div>
+
                     <AddToCartButton
-                        isCustomPizza={false}
                         isCustomized={selectedIngredients.length > 0}
                         data={{
-                            pizza: pizza,
                             basePizza: pizza._id,
                             ingredients: getFinalIngredients(),
                             addedIngredients: selectedIngredients.map(ing => ing.tname),
