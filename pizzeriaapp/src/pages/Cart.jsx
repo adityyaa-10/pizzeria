@@ -33,7 +33,7 @@ const CartPage = () => {
 
 
     return (
-        <>
+        <div className="cart-page">
             <Navbar />
             <div className="cart-container">
                 <div className="cart-layout">
@@ -97,7 +97,7 @@ const CartPage = () => {
                 </div>
             </div>
             <Footer />
-        </>
+        </div>
     )
 }
 

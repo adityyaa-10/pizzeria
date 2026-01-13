@@ -10,6 +10,28 @@ export const addToCart = async (req, res) => {
             return res.status(404).json({ message: "Pizza not found" });
         }
 
+        // If its a BASE pizza, check if it already exists in cart
+        if (!isCustomized) {
+            const existingBasePizzaItem = await Cart.findOne({
+                basePizza: pizzaData._id,
+                isCustomized: false
+            });
+
+            if (existingBasePizzaItem) {
+                existingBasePizzaItem.quantity += 1;
+                await existingBasePizzaItem.save();
+
+                const populatedItem = await Cart.findById(existingBasePizzaItem._id)
+                    .populate("basePizza");
+
+                return res.status(200).json({
+                    updatedItem: populatedItem,
+                    message: "Base pizza quantity increased"
+                });
+            }
+        }
+
+        // Otherwise create a new cart item
         const cartData = {
             isCustomized: isCustomized || false,
             basePizza: pizzaData._id,
@@ -19,9 +41,9 @@ export const addToCart = async (req, res) => {
         };
 
         if (isCustomized) {
-            cartData.ingredients = ingredients;              // base + added
+            cartData.ingredients = ingredients; // base + added
             cartData.addedIngredients = addedIngredients || [];
-            cartData.price = price;                          // recalculated price
+            cartData.price = price; // recalculated price
         } else {
             cartData.ingredients = pizzaData.ingredients;
             cartData.addedIngredients = [];
@@ -32,10 +54,12 @@ export const addToCart = async (req, res) => {
         const populatedItem = await Cart.findById(cartItem._id).populate("basePizza");
 
         res.status(201).json(populatedItem);
+
     } catch (error) {
         res.status(500).json({ message: "Failed to add item to cart" });
     }
 };
+
 
 
 export const getAllCartItems = async (req, res) => {
@@ -53,45 +77,19 @@ export const updateCartItemQuantity = async (req, res) => {
         const { id } = req.params;
         const { quantity } = req.body;
 
-        const existingItem = await Cart.findById(id).populate("basePizza");
+        const existingItem = await Cart.findById(id);
 
         if (!existingItem) {
             return res.status(404).json({ message: "Cart item not found" });
         }
 
-        // If customized pizza & quantity is being increased
-        if (existingItem.isCustomized && quantity > existingItem.quantity) {
-            const basePizza = existingItem.basePizza;
-
-            if (!basePizza) {
-                return res.status(404).json({ message: "Base pizza not found" });
-            }
-
-            // Create a new cart item as base pizza
-            const newCartItem = await Cart.create({
-                isCustomized: false,
-                basePizza: basePizza._id,
-                ingredients: basePizza.ingredients,
-                addedIngredients: [],
-                quantity: 1,
-                price: basePizza.price,
-                imageUrl: basePizza.image,
-                name: basePizza.name
-            });
-
-            const populatedNewItem = await Cart.findById(newCartItem._id)
-                .populate("basePizza");
-
-            return res.status(200).json({
-                originalItem: existingItem,
-                newItem: populatedNewItem,
-                message: "Base pizza added so user can customize again"
+        // quantity updates are allowed only for non-customized pizzas
+        if (existingItem.isCustomized) {
+            return res.status(400).json({
+                message: "Quantity cannot be updated for customized pizzas"
             });
         }
 
-        // Normal update for:
-        // - base pizzas
-        // - customized pizzas when quantity is decreased
         const updatedItem = await Cart.findByIdAndUpdate(
             id,
             { quantity },
@@ -104,7 +102,6 @@ export const updateCartItemQuantity = async (req, res) => {
         res.status(500).json({ message: "Failed to update cart item quantity" });
     }
 };
-
 
 export const deleteCartItem = async (req, res) => {
     try {

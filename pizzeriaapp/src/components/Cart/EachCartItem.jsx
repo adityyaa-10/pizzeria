@@ -22,15 +22,9 @@ const EachCartItem = ({ item, onQuantityChange, onDelete }) => {
 
     const handleIncrease = async () => {
         try {
-            const response = await axios.patch(`http://localhost:8000/api/cart/${item._id}`, {
+            await axios.patch(`http://localhost:8000/api/cart/${item._id}`, {
                 quantity: item.quantity + 1
             })
-
-            // Backend sends newItem only when customized pizza is increased
-            if (response.data.newItem) {
-                alert("A new base pizza was added so you can customize it again.")
-            }
-
             onQuantityChange()
         } catch (error) {
             console.error("Error updating quantity:", error)
@@ -89,37 +83,28 @@ const EachCartItem = ({ item, onQuantityChange, onDelete }) => {
                     )}
                 </div>
 
-                <div className="cart-item-controls">
-                    <div className="quantity-controls">
-                        <button
-                            className="quantity-btn"
-                            onClick={handleDecrease}
-                            disabled={item.quantity <= 1}
-                        >
-                            -
-                        </button>
+                {!isCustomized && (
+                    <div className="cart-item-controls">
+                        <div className="quantity-controls">
+                            <button
+                                className="quantity-btn"
+                                onClick={handleDecrease}
+                                disabled={item.quantity <= 1}
+                            >
+                                -
+                            </button>
 
-                        <span className="quantity-display">{item.quantity}</span>
+                            <span className="quantity-display">{item.quantity}</span>
 
-                        <button
-                            className="quantity-btn"
-                            onClick={handleIncrease}
-                            title={
-                                isCustomized
-                                    ? "Increasing will add a new base pizza for customization"
-                                    : ""
-                            }
-                        >
-                            +
-                        </button>
+                            <button
+                                className="quantity-btn"
+                                onClick={handleIncrease}
+                            >
+                                +
+                            </button>
+                        </div>
                     </div>
-
-                    {isCustomized && (
-                        <span className="quantity-hint">
-                            Increasing adds a base pizza
-                        </span>
-                    )}
-                </div>
+                )}
             </div>
 
             <div className="cart-item-right">

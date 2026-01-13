@@ -1,5 +1,4 @@
-import React from "react"
-import addToCart from "./addToCart"
+import axios from "axios"
 
 const AddToCartButton = ({ isCustomized, data, className, onSuccess }) => {
 
@@ -14,7 +13,7 @@ const AddToCartButton = ({ isCustomized, data, className, onSuccess }) => {
                 quantity: data.quantity
             }
 
-            await addToCart(cartData)
+            await axios.post("http://localhost:8000/api/cart/add", cartData)
 
             const customizationMsg = isCustomized ? " (customized)" : ""
             alert(`Pizza${customizationMsg} added to cart!`)
